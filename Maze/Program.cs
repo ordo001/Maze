@@ -6,7 +6,7 @@ class Program
     {
         var mazeGenerator = new MazeGenerator();
 
-        var maze = mazeGenerator.Generate(5, 5);
+        var maze = mazeGenerator.Generate(10, 10);
         
         var renderer = new MazePrinter(maze); 
 

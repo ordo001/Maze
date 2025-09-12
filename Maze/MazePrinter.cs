@@ -40,7 +40,7 @@ public class MazePrinter
         {
             for (int x = 0; x < displayWidth; x++)
             {
-                output[y, x] = '#';
+                output[y, x] = '\u2593';
             }
         }
 
