@@ -15,7 +15,9 @@ class Program
             renderer.Render();
             var key = Console.ReadKey(true).Key;
             renderer.Move(key);
-            Console.Clear();
+            renderer.MenuFunctionality(key);
+            Console.Clear(); 
+            
         }
         Console.Clear();
         Console.WriteLine("Ты выиграл, красава!");

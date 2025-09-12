@@ -5,11 +5,15 @@ namespace Maze;
 /// </summary>
 public class MazePrinter
 {
+    private const int FogRadius = 3;
+    
+    
     private int _playerX = 0;
     private int _playerY = 0;
     private Maze _maze;
     private int _width;
     private int _height;
+    private bool _isFogEnabled = false;
 
     /// <summary>
     /// ctor
@@ -40,7 +44,10 @@ public class MazePrinter
         {
             for (int x = 0; x < displayWidth; x++)
             {
-                output[y, x] = '\u2593';
+                if (((x / 2 - _playerX) * (x / 2 - _playerX) + (y / 2 - _playerY) * (y / 2 - _playerY) <= FogRadius * FogRadius) || _isFogEnabled) 
+                    output[y, x] = '\u2593';
+                else 
+                    output[y, x] = ' ';
             }
         }
 
@@ -74,6 +81,9 @@ public class MazePrinter
                 Console.Write(output[y, x]);
             Console.WriteLine();
         }
+        
+        Console.WriteLine();
+        Console.WriteLine("Включить/выключить туман войны - F2");
     }
 
     /// <summary>
@@ -119,6 +129,23 @@ public class MazePrinter
             case ConsoleKey.RightArrow:
                 if (!cell.Walls[Direction.Right])
                     _playerX++;
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Функционал меню
+    /// </summary>
+    /// <param name="key">Клавиша</param>
+    public void MenuFunctionality(ConsoleKey key)
+    {
+        switch (key)
+        {
+            case ConsoleKey.F2:
+                if(_isFogEnabled)
+                    _isFogEnabled = false;
+                else
+                    _isFogEnabled = true;
                 break;
         }
     }
