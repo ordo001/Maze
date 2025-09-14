@@ -1,33 +1,33 @@
+using Maze.Interfaces;
+
 namespace Maze;
 
 /// <summary>
-/// Генератор лабиринта. Лабиринт генерируется случайным образом, основываясь на алгоритме DFS Backtracking
+/// Сервис лабиринта
 /// </summary>
-public class MazeGenerator
+public class MazeService : IMazeService
 {
     private Random _random = new Random();
 
     /// <summary>
-    /// Генерация лабиринта
+    /// Сгенерировать лабиринт. Лабиринт генерируется случайным образом, основываясь на алгоритме DFS Backtracking
     /// </summary>
-    /// <param name="width">ширина</param>
-    /// <param name="height">высота</param>
     /// <returns></returns>
-    public Maze Generate(int width, int height)
+    public Maze GenerateMaze()
     {
-        var maze = new Maze(width, height);
+        var maze = new Maze(GameSettings.Width, GameSettings.Height);
 
-        int startX = _random.Next(width);
-        int startY = _random.Next(height);
+        int startX = _random.Next(GameSettings.Width);
+        int startY = _random.Next(GameSettings.Height);
 
         var startCell = maze.GetCell(startX, startY);
         startCell!.Visited = true;
 
         var stack = new Stack<Cell>();
         var currentCell = startCell;
-        
+
         int visitedCount = 1;
-        int totalCells = width * height;
+        int totalCells = GameSettings.Width * GameSettings.Height;
 
         while (visitedCount < totalCells)
         {
@@ -53,9 +53,9 @@ public class MazeGenerator
                 currentCell = stack.Pop();
             }
         }
-        
+
         maze.GetCell(0, 0)!.Walls[Direction.Up] = false;
-        maze.GetCell(width - 1, height - 1)!.Walls[Direction.Down] = false;
+        maze.GetCell(GameSettings.Width - 1, GameSettings.Height - 1)!.Walls[Direction.Down] = false;
 
         return maze;
     }

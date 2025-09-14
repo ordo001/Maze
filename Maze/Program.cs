@@ -1,27 +1,21 @@
-﻿namespace Maze;
+﻿using Maze.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
-class Program
+namespace Maze;
+
+public static class Program
 {
     static void Main(string[] args)
     {
-        var mazeGenerator = new MazeGenerator();
+        var services = new ServiceCollection();
+        services.Configure();
+        var provider = services.BuildServiceProvider();
 
-        var maze = mazeGenerator.Generate(10, 10);
-        
-        var renderer = new MazePrinter(maze); 
+        var game = provider.GetRequiredService<IGameService>();
 
-        while (!renderer.IsAtExit())
-        {
-            renderer.Render();
-            var key = Console.ReadKey(true).Key;
-            renderer.Move(key);
-            renderer.MenuFunctionality(key);
-            Console.Clear(); 
-            
-        }
-        Console.Clear();
-        Console.WriteLine("Ты выиграл, красава!");
-        
+        game.InitializeGame();
+        game.StartGame();
+
         Console.ReadKey();
     }
 }
