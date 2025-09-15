@@ -9,13 +9,18 @@ public class Maze
     /// Ширина
     /// </summary>
     public int Width { get; set; }
-    
+
     /// <summary>
     /// Высота
     /// </summary>
     public int Height { get; set; }
-    
-    private Cell[,] MazeCells { get; set; }
+
+    /// <summary>
+    /// Игрок в лабиринте
+    /// </summary>
+    public Player Player { get; set; }
+
+    private Cell[,] MazeCells { get; }
 
     /// <summary>
     /// ctor
@@ -27,13 +32,14 @@ public class Maze
         Width = width;
         Height = height;
 
+        Player = new Player();
         MazeCells = new Cell[width, height];
-        
+
         for (int x = 0; x < Width; x++)
         {
             for (int y = 0; y < Height; y++)
             {
-                MazeCells[x, y] = new Cell{ X = x, Y = y};
+                MazeCells[x, y] = new Cell { X = x, Y = y };
             }
         }
     }
@@ -67,7 +73,7 @@ public class Maze
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
     }
-    
+
     /// <summary>
     /// Получить соседние клетки
     /// </summary>
@@ -78,15 +84,15 @@ public class Maze
         var up = GetCell(cell.X, cell.Y - 1);
         if (up != null)
             yield return (up, Direction.Up);
-        
+
         var down = GetCell(cell.X, cell.Y + 1);
         if (down != null)
             yield return (down, Direction.Down);
-        
+
         var left = GetCell(cell.X - 1, cell.Y);
         if (left != null)
             yield return (left, Direction.Left);
-        
+
         var right = GetCell(cell.X + 1, cell.Y);
         if (right != null)
             yield return (right, Direction.Right);
@@ -114,7 +120,7 @@ public class Maze
         {
             for (int j = 0; j < Height; j++)
             {
-                yield return MazeCells[i, j]; 
+                yield return MazeCells[i, j];
             }
         }
     }
